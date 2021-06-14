@@ -38,7 +38,7 @@ namespace AppOwnsData.Services
         /// Get embed params for a report
         /// </summary>
         /// <returns>Wrapper object containing Embed token, Embed URL, Report Id, and Report name for single report</returns>
-        public EmbedParams GetEmbedParams(Guid workspaceId, Guid reportId, [Optional] Guid additionalDatasetId)
+        public EmbedParams GetEmbedParams(Guid workspaceId, Guid reportId, string username, [Optional] Guid additionalDatasetId)
         {
             PowerBIClient pbiClient = this.GetPowerBIClient();
 
@@ -62,17 +62,27 @@ namespace AppOwnsData.Services
                 // Create list of datasets
                 var datasetIds = new List<Guid>();
 
-                // Add dataset associated to the report
-                datasetIds.Add(Guid.Parse(pbiReport.DatasetId));
-
                 // Append additional dataset to the list to achieve dynamic binding later
+                // In this example, we use this mechanism to get the only dataset in the token.
                 if (additionalDatasetId != Guid.Empty)
                 {
                     datasetIds.Add(additionalDatasetId);
                 }
 
+                EffectiveIdentity effectiveIdentity = null;
+                if (!string.IsNullOrWhiteSpace(username))
+                {
+                    // For Row-Level Security, we need to pass in the users identity.
+                    // This is used in the report to limit the data to the tenant, so we pass
+                    // the tenant identifier as the username.
+                    effectiveIdentity = new EffectiveIdentity(
+                        username,
+                        datasetIds.Select(x => x.ToString()).ToList(),
+                        new List<string> { "TenantRole" }
+                    );
+                }
                 // Get Embed token multiple resources
-                embedToken = GetEmbedToken(reportId, datasetIds, workspaceId);
+                embedToken = GetEmbedToken(reportId, datasetIds, effectiveIdentity, workspaceId);
             }
 
             // Add report data for embedding
@@ -148,7 +158,7 @@ namespace AppOwnsData.Services
         /// </summary>
         /// <returns>Embed token</returns>
         /// <remarks>This function is not supported for RDL Report</remakrs>
-        public EmbedToken GetEmbedToken(Guid reportId, IList<Guid> datasetIds, [Optional] Guid targetWorkspaceId)
+        public EmbedToken GetEmbedToken(Guid reportId, IList<Guid> datasetIds, [Optional] EffectiveIdentity effectiveIdentity, [Optional] Guid targetWorkspaceId)
         {
             PowerBIClient pbiClient = this.GetPowerBIClient();
 
@@ -162,6 +172,12 @@ namespace AppOwnsData.Services
 
                 targetWorkspaces: targetWorkspaceId != Guid.Empty ? new List<GenerateTokenRequestV2TargetWorkspace>() { new GenerateTokenRequestV2TargetWorkspace(targetWorkspaceId) } : null
             );
+
+            if (effectiveIdentity != null)
+            {
+                var identities = new List<EffectiveIdentity> { effectiveIdentity };
+                tokenRequest.Identities = identities;
+            }
 
             // Generate Embed token
             var embedToken = pbiClient.EmbedToken.GenerateToken(tokenRequest);

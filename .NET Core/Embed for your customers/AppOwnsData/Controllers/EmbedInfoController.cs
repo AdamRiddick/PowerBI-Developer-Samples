@@ -30,7 +30,8 @@ namespace AppOwnsData.Controllers
         /// </summary>
         /// <returns>JSON containing parameters for embedding</returns>
         [HttpGet]
-        public string GetEmbedInfo()
+        [Route("/embedinfo/getembedinfo/{datasetId}/{username?}")]
+        public string GetEmbedInfo(Guid datasetId, string username)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace AppOwnsData.Controllers
                     return configValidationResult;
                 }
 
-                EmbedParams embedParams = pbiEmbedService.GetEmbedParams(new Guid(powerBI.Value.WorkspaceId), new Guid(powerBI.Value.ReportId));
+                EmbedParams embedParams = pbiEmbedService.GetEmbedParams(new Guid(powerBI.Value.WorkspaceId), new Guid(powerBI.Value.ReportId), username, datasetId);
                 return JsonSerializer.Serialize<EmbedParams>(embedParams);
             }
             catch (Exception ex)

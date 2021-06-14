@@ -22,21 +22,28 @@ Licensed under the MIT license. -->
     <main class="row">
         <section id="text-container" class="embed-container col-lg-4 col-md-4 col-sm-4 mb-5 ml-5 mt-5">
             <div>
-                <p>This sample is developed using .NET Core.
-                    <br>
-                    In order to see a different report, make changes to the <i>appsettings.json</i> file.
+                <p>
+                    Select a data source from the following list;
+                    <select id="datasource">
+                        <option value="beead451-939b-4b80-813e-b42a5777421b">Blue - Imported</option>
+                        <option value="042296b7-c4b5-42be-b7df-c409a612276f">Green - Imported</option>
+                        <option value="70d3ab1c-b2ab-4b6f-9898-911685986ea5">Red - Imported</option>
+                        <option value="ad933eb8-52fa-41bc-904e-dcec29f858ba">Blue - Direct Query</option>
+                        <option value="7760f6cb-8e10-483d-bae3-dc9f068d8b3b">Green - Direct Query</option>
+                        <option value="3a5b7db0-8fbf-4794-bedd-18ff68f3da54">Red - Direct Query</option>
+                        <option value="b99bd515-bbf5-4eec-9df9-88e731bdffba">Blue - MT Direct Query</option>
+                        <option value="1fcc7af7-26b2-4138-8d93-f69473df5a11">Green - MT Direct Query</option>
+                        <option value="b54e7f0a-aa8d-4dfd-8914-eba02ed43627">Red - MT Direct Query</option>
+                        <option value="3da5ea2e-25b0-4331-9d98-5f3de66a814a">MT RLS Direct Query</option>
+                    </select>
                 </p>
-                <p>Code is present in the following files:
-                    <ol>
-                        <li>ConfigurationModel.cs</li>
-                        <li>EmbedInfoController.cs</li>
-                        <li>AadService.cs</li>
-                        <li>PbiEmbedService.cs</li>
-                        <li>ConfigValidatorService.cs</li>
-                        <li>Index.cshtml.cs</li>
-                        <li>index.js</li>
-                        <li>index.css</li>
-                    </ol>
+                <p id="user-container">
+                    User
+                    <select id="user">
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                    </select>
                 </p>
             </div>
         </section>
