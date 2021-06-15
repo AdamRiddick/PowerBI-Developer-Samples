@@ -7,9 +7,9 @@ header {
     width: 100%;
 }
 
-header > p {
+header > p, a {
     color: #FFFFFF;
-    font: bold 1.6em "segoe ui", arial, sans-serif;
+    font: bold 24px "segoe ui", arial, sans-serif;
     margin-left: 31px;
     padding-top: 20px;
 }

@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.PowerBI.Api" Version="3.21.0" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.76" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\css\dashboard\" />
+    <Folder Include="wwwroot\css\bookmarks\" />
+    <Folder Include="wwwroot\img\bookmarks\" />
+    <Folder Include="wwwroot\js\bookmarks\" />
+  </ItemGroup>
 </Project>
