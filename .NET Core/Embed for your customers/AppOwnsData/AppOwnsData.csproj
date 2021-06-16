@@ -15,5 +15,6 @@
     <Folder Include="wwwroot\css\bookmarks\" />
     <Folder Include="wwwroot\img\bookmarks\" />
     <Folder Include="wwwroot\js\bookmarks\" />
+    <Folder Include="wwwroot\js\styles\" />
   </ItemGroup>
 </Project>
