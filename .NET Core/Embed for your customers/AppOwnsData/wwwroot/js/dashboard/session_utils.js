@@ -1,5 +1,6 @@
 // API Endpoint to get the JSON response of Embed URL, Embed Token and reportId
-const layoutShowcaseReportEndpoint = "https://aka.ms/layoutReportEmbedConfig";
+//const reportEndpoint = "https://aka.ms/ThemeReportEmbedConfig";
+const reportEndpoint = "https://localhost:5001/embedinfo/getembedinfo/3da5ea2e-25b0-4331-9d98-5f3de66a814a/Blue";
 
 // Set minutes before the access token should get refreshed
 const minutesToRefreshBeforeExpiration = 2;
@@ -11,7 +12,7 @@ let tokenExpiration;
 function populateEmbedConfigIntoCurrentSession(updateCurrentToken) {
 
     try {
-        let configFromParentWindow = window.parent.showcases.personalizeTopInsights;
+        let configFromParentWindow = window.parent.showcases.personalizeReportDesign;
         if (configFromParentWindow) {
             let diffMs = new Date(configFromParentWindow.expiration) - new Date();
             let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
@@ -34,19 +35,20 @@ function populateEmbedConfigIntoCurrentSession(updateCurrentToken) {
     }
 
     // This returns the JSON response
-    return $.getJSON(layoutShowcaseReportEndpoint, function (embedConfig) {
+    return $.getJSON(reportEndpoint, function (embedConfig) {
         handleNewEmbedConfig(embedConfig, updateCurrentToken);
     });
 }
 
 function handleNewEmbedConfig(embedConfig, updateCurrentToken) {
 
+    console.log(embedConfig);
     // Set Embed Token, Embed URL and Report Id
-    setConfig(embedConfig.EmbedToken.Token, embedConfig.EmbedUrl, embedConfig.Id);
+    setConfig(embedConfig.EmbedToken.Token, embedConfig.EmbedReport[0].EmbedUrl, embedConfig.EmbedReport[0].ReportId);
     if (updateCurrentToken) {
 
         // Get the reference to the embedded element
-        const reportContainer = $("#report-container").get(0);
+        const reportContainer = $(".report-container").get(0);
         if (reportContainer) {
             const report = powerbi.get(reportContainer);
             report.setAccessToken(embedConfig.EmbedToken.Token);
@@ -93,10 +95,14 @@ function loadLayoutShowcaseReportIntoSession() {
     return populateEmbedConfigIntoCurrentSession(false /* updateCurrentToken */);
 }
 
-// Set the embed config in global object
+// Set the embed config in globals
 function setConfig(accessToken, embedUrl, reportId) {
 
     // Fill the global object
+    console.log(accessToken);
+    console.log(embedUrl);
+    console.log(reportId);
+
     reportConfig.accessToken = accessToken;
     reportConfig.embedUrl = embedUrl;
     reportConfig.reportId = reportId;

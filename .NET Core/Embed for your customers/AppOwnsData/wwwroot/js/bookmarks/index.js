@@ -175,7 +175,8 @@ async function embedBookmarksReport() {
 
     // Use View permissions
     let permissions = models.Permissions.View;
-
+    
+    const rlsDatasetId = "3da5ea2e-25b0-4331-9d98-5f3de66a814a";
     // Embed configuration used to describe the what and how to embed
     // This object is used when calling powerbi.embed
     // This also includes settings and options such as filters
@@ -187,6 +188,9 @@ async function embedBookmarksReport() {
         embedUrl: reportConfig.embedUrl,
         id: reportConfig.reportId,
         permissions: permissions,
+        datasetBinding: {
+            datasetId: rlsDatasetId,
+        },
         settings: {
             panes: {
                 filters: {
@@ -242,7 +246,7 @@ function createBookmarksList(bookmarks) {
     });
 
     // Set first bookmark active
-    if (bookmarksList.length) {
+    if (bookmarksList.length && bookmarkShowcaseState.bookmarks.length) {
         let firstBookmark = $("#" + bookmarkShowcaseState.bookmarks[0].name);
 
         // Apply first bookmark state

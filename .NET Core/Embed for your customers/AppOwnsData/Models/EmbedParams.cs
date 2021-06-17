@@ -6,6 +6,8 @@
 namespace AppOwnsData.Models
 {
     using Microsoft.PowerBI.Api.Models;
+
+    using System;
     using System.Collections.Generic;
 
     public class EmbedParams
@@ -18,5 +20,8 @@ namespace AppOwnsData.Models
 
         // Embed Token for the Power BI report
         public EmbedToken EmbedToken { get; set; }
+
+        // Should use system clock, not static datetime.
+        public int MinutesToExpiration => (int)(EmbedToken.Expiration - DateTime.UtcNow).TotalMinutes;
     }
 }

@@ -74,6 +74,8 @@ async function embedThemesReport() {
     // Use View permissions
     const permissions = models.Permissions.View;
 
+    const rlsDatasetId = "3da5ea2e-25b0-4331-9d98-5f3de66a814a";
+
     // Embed configuration used to describe the what and how to embed
     // This object is used when calling powerbi.embed
     // This also includes settings and options such as filters
@@ -84,6 +86,9 @@ async function embedThemesReport() {
         accessToken: accessToken,
         embedUrl: embedUrl,
         id: embedReportId,
+        datasetBinding: {
+            datasetId: rlsDatasetId,
+        },
         permissions: permissions,
         settings: {
             panes: {
